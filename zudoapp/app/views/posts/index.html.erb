@@ -1,0 +1,28 @@
+<div id="notice"><%= notice %></div>
+
+<h1>Posts</h1>
+<p><%= link_to 'home', '/' %></p>
+<ul>
+  <% @posts.each do |post| %>
+		<li id="post_<%= post.id %>">
+			<%= link_to post.title, post_path(post) %>
+			(<%= post.comments.size %>)
+			<%= link_to 'Edit', edit_post_path(post) %>
+			<%= link_to 'Delete', post, :confirm => 'Sure?',
+				:method => :delete,
+				:remote => true
+			%>
+		</li>
+  <% end %>
+</ul>
+
+<p>
+<%= link_to 'home', posts_path %> | <%= link_to 'New', new_post_path %>
+</p>
+
+<script>
+$('a[data-method="delete"]')
+	.on('ajax:success', function(e, data, status, xhr) {
+		$('#post_'+data.post.id).fadeOut("slow");
+	});
+</script>
